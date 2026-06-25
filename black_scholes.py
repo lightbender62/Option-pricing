@@ -28,7 +28,5 @@ def Calculate_Price(S , K , T , r , vol):
 C , P = Calculate_Price(S , K , T , r , vol)
 
 #Printing Results 
-print('The Value of d1 is : ' , round(d1 , 4))
-print('The Value of d2 is : ' , round(d2 , 4))
 print('The Price of the call option is : $' , round(C , 2))
 print('The Price of the Put option is : $' , round(P , 2))
