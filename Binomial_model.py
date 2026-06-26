@@ -1,6 +1,6 @@
 import numpy as np
 
-def Binomial_model(S0 , K , T ,r , N , vol):
+def Binomial_model(S0 , K , T ,r , vol , N):
 
     #precomute constants
     dt = T/N
