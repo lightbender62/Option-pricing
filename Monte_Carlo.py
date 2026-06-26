@@ -7,7 +7,7 @@ T = 0.5 #Expiration Date
 r = 0.1 # Risk-Free Rate
 vol = 0.2 #Volatility (sigma)
 N = 100 #Time Steps number
-M = 1000 #Number of Simulations
+M = 1000000 #Number of Simulations
 
 #precompute constants
 dt = T/N
