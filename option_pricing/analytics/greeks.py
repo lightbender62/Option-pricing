@@ -1,5 +1,4 @@
 import sys
-sys.path.append('.')
 from option_pricing.models.black_scholes import Calculate_d1_d2
 import math
 from scipy.stats import norm
