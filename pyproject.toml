@@ -20,5 +20,5 @@ dependencies = [
     "scipy==1.18.0"
 ]
 
-[tool.setuptools]
-packages = ["option_pricing"]
+[tool.setuptools.packages.find]
+include = ["option_pricing*"]
