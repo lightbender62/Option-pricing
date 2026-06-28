@@ -5,7 +5,7 @@ Run from the project root:
     python examples/black_scholes_example.py
 """
 
-from option_pricing.models.black_scholes import Calculate_Price
+from option_pricing import Calculate_Price
 
 S = 100
 K = 100

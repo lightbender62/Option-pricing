@@ -5,7 +5,7 @@ Run from the project root:
     python examples/monte_carlo_example.py
 """
 
-from option_pricing.models.monte_carlo import Monte_Carlo
+from option_pricing import Monte_Carlo
 
 S = 100
 K = 100

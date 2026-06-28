@@ -5,7 +5,7 @@ Run from the project root:
     python examples/binomial_model_example.py
 """
 
-from option_pricing.models.binomial_model import Binomial_model
+from option_pricing import Binomial_model
 
 S = 100
 K = 100

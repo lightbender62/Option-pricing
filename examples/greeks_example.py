@@ -5,7 +5,7 @@ Run from the project root:
     python examples/greeks_example.py
 """
 
-from option_pricing.analytics.greeks import Greeks
+from option_pricing import Greeks
 
 S = 100
 K = 100

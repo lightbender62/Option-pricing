@@ -5,7 +5,7 @@ Run from the project root:
     python examples/implied_volatility_example.py
 """
 
-from option_pricing.analytics.implied_volatility import Implied_vol
+from option_pricing import Implied_vol
 
 S = 100
 K = 100
