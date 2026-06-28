@@ -29,6 +29,11 @@ Option-pricing/
 ├── Greeks.py                # Option Greeks
 └── Implied_Volatility.py    # Implied volatility calculation
 ```
+
+### Theory
+
+This directory contains our handwritten notes and reference material used during the development of the project. These notes were primarily prepared for internal discussion and learning within the team, and therefore may not be formatted as formal documentation.
+
 ---
 ## Mathematical Models
 ### 1. Black-Scholes Model
