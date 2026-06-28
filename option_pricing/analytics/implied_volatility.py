@@ -1,5 +1,5 @@
-from black_scholes import Calculate_Price
-from Greeks import Vega
+from option_pricing.models.black_scholes import Calculate_Price
+from option_pricing.analytics.greeks import Vega
 
 #Tolerance, keeping it fixed so I can standardize it
 tol = 1e-6

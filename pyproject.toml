@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "option-pricing"
+version = "0.1.0"
+description = "A Python library implementing European option pricing models and analytics."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "Eklavya"},
+    {name = "Soham Gupta"},
+    {name = "Prasad Wagh"},
+    {name = "Parth Kalia"}
+]
+
+dependencies = [
+    "numpy==2.4.0",
+    "scipy==1.18.0"
+]
+
+[tool.setuptools]
+packages = ["option_pricing"]

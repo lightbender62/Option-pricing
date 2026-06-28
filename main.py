@@ -1,8 +1,8 @@
-from Implied_Volatility import Implied_vol
-from Monte_Carlo import Monte_Carlo
-from Greeks import Greeks
-from black_scholes import Calculate_Price
-from Binomial_model import Binomial_model
+from option_pricing.analytics.implied_volatility import Implied_vol
+from option_pricing.models.monte_carlo import Monte_Carlo
+from option_pricing.analytics.greeks import Greeks
+from option_pricing.models.black_scholes import Calculate_Price
+from option_pricing.models.binomial_model import Binomial_model
 
 S = float(input("Enter stock price (S): "))
 K = float(input("Enter strike price (K): "))
