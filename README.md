@@ -1,11 +1,20 @@
 # Option Pricing
-A Project developed by our team for **IITI Summer of Code (IITI-SOC)** program. This is a Python Library implementing several option pricing models used in quantitative finance. This project, when completed will provide analytical and visual aid, for several option models, and their Greeks.The repository is currently under active development, and new features and improvements will be added over time. The sections below describe the features implemented so far and provide instructions for installing and using the library.
+A Python library implementing classical option pricing models and quantitative finance analytics, developed as part of the IITI Summer of Code (IITI-SOC) program.
+
+The project aims to provide a modular, easy-to-use implementation of widely used pricing models for European options, along with analytical tools such as option Greeks and implied volatility estimation. In addition to functioning as a Python package, the repository includes a command-line interface, example programs, and supporting documentation.
+Currently, the library supports pricing European Call and Put options.
+
+**Project Status:** This project is currently under active development. The core pricing models and analytical tools have been implemented, while additional features, documentation, visualizations, and pricing models will continue to be added over time.
 
 ---
 ## Features
+
+### Pricing Models
 - Black-Scholes analytical pricing model
 - Cox-Ross-Rubinstein (CRR) Binomial Tree Model
 - Monte Carlo Simulation using Geometric Brownian Motion
+
+### Analytics
 - Implied Volatility estimation using the Newton-Raphson method
 - Calculation of Option Greeks
   - Delta
@@ -13,27 +22,50 @@ A Project developed by our team for **IITI Summer of Code (IITI-SOC)** program. 
   - Theta
   - Vega
   - Rho
-- Interactive command-line interface
+
+### Utilities
+- Interactive command-line interface (`main.py`)
+- Modular Python package
+- Individual example scripts for each implemented model
+- Supporting theoretical documentation
+
 ---
 ## Project Structure
-```text
+```
 Option-pricing/
 │
-├── Theory/                  # Project documentation and notes
+├── docs/
+│   ├── README.md
+│   ├── theory/                      # Mathematical references and notes
+│   └── report/                      # Reports made for evaluations  
+│
+├── examples/                        # Example scripts
+│   ├── black_scholes_example.py
+│   ├── binomial_model_example.py
+│   ├── monte_carlo_example.py
+│   ├── greeks_example.py
+│   └── implied_volatility_example.py
+│
+├── option_pricing/
+│   ├── analytics/
+│   │   ├── __init__.py
+│   │   ├── greeks.py
+│   │   └── implied_volatility.py
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── black_scholes.py
+│   │   ├── binomial_model.py
+│   │   └── monte_carlo.py
+│   │
+│   └── __init__.py
+│
 ├── .gitignore
+├── main.py                          # Interactive CLI
+├── pyproject.toml                   # Package configuration
 ├── README.md
-├── main.py                  # Main executable
-├── black_scholes.py         # Black-Scholes pricing model
-├── Binomial_model.py        # Binomial pricing model
-├── Monte_Carlo.py           # Monte Carlo simulation
-├── Greeks.py                # Option Greeks
-└── Implied_Volatility.py    # Implied volatility calculation
+└── requirements.txt
 ```
-
-### Theory
-
-This directory contains our handwritten notes and reference material used during the development of the project. These notes were primarily prepared for internal discussion and learning within the team, and therefore may not be formatted as formal documentation.
-
 ---
 ## Mathematical Models
 ### 1. Black-Scholes Model
@@ -54,11 +86,11 @@ Computes the volatility implied by a market option price using the Newton-Raphso
 ---
 ### 5. Greeks
 Calculates the primary risk sensitivities of European options:
--Delta
--Gamma
--Theta
--Vega
--Rho
+- Delta
+- Gamma
+- Theta
+- Vega
+- Rho
 
 ---
 ## Installation
@@ -76,6 +108,31 @@ Or install the package locally
 ```bash
 pip install -e .
 ```
+The project includes a `pyproject.toml` configuration, allowing it to be installed as a standard Python package.
+
+---
+## Quick Start
+Run the interactive command-line application
+```bash
+python main.py
+```
+or use the library directly
+```python
+from option_pricing import Calculate_Price
+
+call, put = Calculate_Price(
+    S=100,
+    K=100,
+    T=1,
+    r=0.05,
+    vol=0.20,
+)
+
+print(call)
+print(put)
+```
+Examples demonstrating the usage of each pricing model are available in the `examples/` directory.
+
 
 ---
 ## Dependencies
@@ -131,7 +188,7 @@ Example Input:
 
 The close agreement in between of three models, shows the validity of the results. The result gets more accurate, when Time steps(N) for Binomial Tree, and number of Simulations(M) for Monte carlo are increased.
 
-#### Greeks
+#### Greeks Validation
 
 | Greek | Call | Put |
 |:------|-----:|----:|
@@ -143,13 +200,49 @@ The close agreement in between of three models, shows the validity of the result
 
 The calculated Greeks closely match the expected analytical values for the given test case.
 
-#### Implied Volatility
+#### Implied Volatility Validation
 
 | Method | Implied Volatility |
 |:------|-------------------:|
 | Newton-Raphson | 0.200000 |
 
 The implied volatility solver converges to the expected market volatility for the given option price, confirming the accuracy of the Newton-Raphson implementation.
+
+---
+## Documentation
+
+Supporting documentation and reference material are available in the `docs/` directory.
+
+### Contents
+
+#### `theory/`
+
+Contains the theoretical references and study material used during the implementation of the pricing models, including:
+
+* Black-Scholes Theory
+* Risk-Neutral Valuation
+* Stochastic Processes
+* Itô Calculus
+* Option Greeks
+
+These references were used to understand the mathematical foundations of the implemented algorithms and to verify their correctness.
+
+#### `report/`
+
+Contains project reports and documentation prepared throughout the development of the project, including the IITI Summer of Code (IITI-SOC) mid-evaluation report and future project reports.
+
+The documentation is intended to complement the source code by providing both the mathematical background and the project's development progress.
+
+---
+## Future Work
+Planned additions include : 
+- Support for American options
+- Additional pricing models
+- Performance optimizations
+- More visualization utilities
+- Expanded documentation
+- Additional examples and tutorials
+- Packaging for PyPI distribution
 
 ---
 ## Team
