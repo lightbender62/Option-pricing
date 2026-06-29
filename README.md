@@ -1,4 +1,11 @@
-# Option Pricing
+# Option Pricing 
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?logo=numpy)
+![SciPy](https://img.shields.io/badge/SciPy-Optimization-8CAAE6?logo=scipy)
+![Last Commit](https://img.shields.io/github/last-commit/lightbender62/Option-pricing)
+![Repo Size](https://img.shields.io/github/repo-size/lightbender62/Option-pricing)
+![Status](https://img.shields.io/badge/Status-Active%20Development-success)
+
 A Python library implementing classical option pricing models and quantitative finance analytics, developed as part of the IITI Summer of Code (IITI-SOC) program.
 
 The project aims to provide a modular, easy-to-use implementation of widely used pricing models for European options, along with analytical tools such as option Greeks and implied volatility estimation. In addition to functioning as a Python package, the repository includes a command-line interface, example programs, and supporting documentation.
