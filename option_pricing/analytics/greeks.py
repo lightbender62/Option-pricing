@@ -14,8 +14,10 @@ def Greeks(S , K , T , r , vol):
     gamma = norm.pdf(d1) /(S*vol*math.sqrt(T))
 
     #Theta (daily)
-    theta_call = -(S*norm.pdf(d1)*vol)/(2*math.sqrt(T)) - r*K*math.exp(-r*T)*norm.cdf(d2)/365
-    theta_put = -(S*norm.pdf(d1)*vol)/(2*math.sqrt(T)) + r*K*math.exp(-r*T)*norm.cdf(-d2)/365
+    theta_call = -(S*norm.pdf(d1)*vol)/(2*math.sqrt(T)) - r*K*math.exp(-r*T)*norm.cdf(d2)
+    theta_call/=365
+    theta_put = -(S*norm.pdf(d1)*vol)/(2*math.sqrt(T)) + r*K*math.exp(-r*T)*norm.cdf(-d2)
+    theta_put /=365
 
     #Vega
     vega = S*norm.pdf(d1) *math.sqrt(T)
