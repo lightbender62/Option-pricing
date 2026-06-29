@@ -16,8 +16,8 @@ authors = [
 ]
 
 dependencies = [
-    "numpy==2.4.0",
-    "scipy==1.18.0"
+    "numpy>=1.21",
+    "scipy>=1.9"
 ]
 
 [tool.setuptools.packages.find]
