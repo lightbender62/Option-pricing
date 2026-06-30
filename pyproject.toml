@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "option-pricing"
 version = "1.0.0"
-description = "A Python library implementing European option pricing models and analytics."
+description = "A Python library for option pricing and quantitative finance analytics."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
