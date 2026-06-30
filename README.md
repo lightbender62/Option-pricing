@@ -101,21 +101,36 @@ Calculates the primary risk sensitivities of European options:
 
 ---
 ## Installation
+Clone the repository:
+
 ```bash
 git clone https://github.com/lightbender62/Option-pricing.git
 cd Option-pricing
 ```
 
-Install the required dependencies
+Create and activate a virtual environment (recommended):
+
 ```bash
-pip install -r requirements.txt
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# Linux/macOS
+source .venv/bin/activate
 ```
 
-Or install the package locally
+Install the package:
+
 ```bash
-pip install -e .
+pip install .
 ```
-The project includes a `pyproject.toml` configuration, allowing it to be installed as a standard Python package.
+
+Run the demo:
+
+```bash
+python main.py
+```
 
 ---
 ## Quick Start
