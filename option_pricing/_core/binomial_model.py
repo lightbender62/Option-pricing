@@ -1,10 +1,13 @@
+"""
+Binomial tree (CRR) option pricing model.
+"""
 import numpy as np
 
-def Binomial_model(S0 , K , T ,r , vol , N):
+def binomial_price(S0, K, T, r, sigma, N):
 
     #precomute constants
     dt = T/N
-    u = np.exp(vol*np.sqrt(dt))
+    u = np.exp(sigma*np.sqrt(dt))
     d = 1/u
     q = (np.exp(r*dt) - d) / (u-d)
     disc = np.exp(-r*dt)

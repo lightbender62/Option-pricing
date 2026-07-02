@@ -1,20 +1,13 @@
 """
 option_pricing
 
-A Python package for pricing European options using
-Black-Scholes, Binomial Tree, and Monte Carlo methods,
-along with option Greeks and implied volatility calculations.
+A Python library for options pricing and quantitative finance analytics.
 """
 
-from .models import Calculate_Price, Binomial_model, Monte_Carlo
-from .analytics import Greeks, Implied_vol
+from .european import EuropeanOption
 
 __version__ = "1.0.0"
 
 __all__ = [
-    "Calculate_Price",
-    "Binomial_model",
-    "Monte_Carlo",
-    "Greeks",
-    "Implied_vol",
+    "EuropeanOption",
 ]
