@@ -17,6 +17,9 @@ authors = [
 
 dependencies = [
     "numpy>=1.21",
+    "yfinance>=0.2",
+    "matplotlib>=3.5",
+    "plotly>=5.0",
     "scipy>=1.9"
 ]
 

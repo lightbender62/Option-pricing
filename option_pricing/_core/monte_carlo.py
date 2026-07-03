@@ -11,7 +11,10 @@ def monte_carlo_price(S, K, T, r, sigma, N, M):
     lnS = np.log(S)
 
     #Monte carlo method
-    Z = np.random.normal(size=(N , M))
+    half = (M + 1) // 2
+
+    Z = np.random.normal(size=(N, half))
+    Z = np.concatenate((Z, -Z), axis=1)[:, :M]
     delta_lnSt = nudt + sigmasdt*Z
     lnSt = lnS + np.cumsum(delta_lnSt , axis=0)
     lnSt = np.concatenate((np.full(shape=(1 , M) , fill_value=lnS) , lnSt))
