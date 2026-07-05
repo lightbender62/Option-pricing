@@ -5,13 +5,14 @@ A Python library for options pricing and quantitative finance analytics.
 """
 
 from .european import EuropeanOption
-from .visualization import VolatilitySurface
-from .visualization import PayoffDiagram
+from .visualization import VolatilitySurface, PayoffDiagram, PricingCurves, GreeksProfile
 
 __version__ = "1.0.0"
 
 __all__ = [
     "EuropeanOption",
-    "VolatilitySurface"
-    "PayoffDiagram"
+    "VolatilitySurface",
+    "PayoffDiagram",
+    "PricingCurves",
+    "GreeksProfile"
 ]
