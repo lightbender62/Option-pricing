@@ -29,4 +29,16 @@ def monte_carlo_price(S, K, T, r, sigma, N, M):
 
     return call, put
 
+def simulate_paths(S, T, r, sigma, N, M):
+    dt = T / N
+    nudt = (r - 0.5 * sigma**2) * dt
+    sigmasdt = sigma * np.sqrt(dt)
+    lnS = np.log(S)
+
+    Z = np.random.normal(size=(N, M))
+    delta_lnSt = nudt + sigmasdt * Z
+    lnSt = lnS + np.cumsum(delta_lnSt, axis=0)
+    lnSt = np.concatenate((np.full(shape=(1, M), fill_value=lnS), lnSt))
+
+    return np.exp(lnSt)
 
