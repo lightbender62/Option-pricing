@@ -94,6 +94,32 @@ def barrier_price(S , K , T , r , sigma , N , M , H , barrier_type):
     put = np.exp(-r*T)*np.mean(PT)
 
     return call, put
+
+def lookback_price_floating(S , T , r , sigma , N , M):
+    paths = simulate_paths(S , T , r , sigma , N , M)
+    S_minimum = np.min(paths , axis = 0)
+    S_maximum = np.max(paths , axis = 0)
+
+    CT = paths[-1] - S_minimum
+    PT = S_maximum - paths[-1]
+    
+    call = np.exp(-r*T)*np.mean(CT)
+    put = np.exp(-r*T)*np.mean(PT)
+
+    return call , put
+
+def lookback_price_fixed(S ,K , T , r , sigma , N , M):
+    paths = simulate_paths(S , T , r , sigma , N , M)
+    S_minimum = np.min(paths , axis = 0)
+    S_maximum = np.max(paths , axis = 0)
+
+    CT = np.maximum(S_maximum - K, 0)
+    PT = np.maximum(K - S_minimum, 0)
+    
+    call = np.exp(-r*T)*np.mean(CT)
+    put = np.exp(-r*T)*np.mean(PT)
+
+    return call , put
     
 
         
