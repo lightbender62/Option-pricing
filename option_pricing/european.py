@@ -4,7 +4,7 @@ European option pricing, Greeks, and implied volatility.
 from option_pricing._core import (
     calculate_price,
     binomial_price,
-    monte_carlo_price,
+    european_price,
     calculate_greeks,
     calculate_iv
 )
@@ -19,7 +19,7 @@ class EuropeanOption(BaseOption):
         elif model == 'binomial':
             call, _ = binomial_price(self.S, self.K, self.T, self.r, self.sigma, steps)
         elif model == 'montecarlo':
-            call, _ = monte_carlo_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
+            call, _ = european_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
         else:
             raise ValueError(f"Unknown model '{model}'. Choose from: 'black_scholes', 'binomial', 'montecarlo'")
         return call
@@ -30,7 +30,7 @@ class EuropeanOption(BaseOption):
         elif model == 'binomial':
             _, put = binomial_price(self.S, self.K, self.T, self.r, self.sigma, steps)
         elif model == 'montecarlo':
-            _, put = monte_carlo_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
+            _, put = european_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
         else:
             raise ValueError(f"Unknown model '{model}'. Choose from: 'black_scholes', 'binomial', 'montecarlo'")
         return put

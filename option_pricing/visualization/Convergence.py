@@ -4,7 +4,7 @@ Convergence analysis: Monte Carlo and Binomial Tree vs Black-Scholes.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from option_pricing._core import calculate_price, binomial_price, monte_carlo_price
+from option_pricing._core import calculate_price, binomial_price, european_price
 
 
 class ConvergenceAnalysis:
@@ -23,7 +23,7 @@ class ConvergenceAnalysis:
         mc_prices = []
 
         for M in path_counts:
-            call, _ = monte_carlo_price(self.S, self.K, self.T, self.r, self.sigma, N=252, M=M)
+            call, _ = european_price(self.S, self.K, self.T, self.r, self.sigma, N=252, M=M)
             mc_prices.append(call)
 
         plt.figure(figsize=(10, 5))
