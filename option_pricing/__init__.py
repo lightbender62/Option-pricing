@@ -16,7 +16,7 @@ __all__ = [
     "PayoffDiagram",
     "PricingCurves",
     "GreeksProfile",
-    "MonteCarloVisualization"
-    "ConvergenceAnalysis"
-    "PriceHeatmap"
+    "MonteCarloVisualization",
+    "ConvergenceAnalysis",
+    "PriceHeatmap",
 ]

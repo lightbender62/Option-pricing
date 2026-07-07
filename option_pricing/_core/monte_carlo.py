@@ -54,4 +54,48 @@ def asian_price_geometric(S , K , T ,r , sigma , N , M):
 
     return call , put
 
+def barrier_price(S , K , T , r , sigma , N , M , H , barrier_type):
+    if "down" in barrier_type and H >= S:
+        raise ValueError("For down barriers, H must be less than S.")
+
+    if "up" in barrier_type and H <= S:
+        raise ValueError("For up barriers, H must be greater than S.")
+    paths = simulate_paths(S , T , r , sigma , N , M)
+    ST = paths[-1]
+    CT = np.maximum(0 , ST - K)
+    PT = np.maximum(0 , K-ST) 
+    if barrier_type == "down-and-out":
+        crossed = np.any(paths<=H , axis=0)
+        CT[crossed] = 0
+        PT[crossed] = 0
+    
+    elif barrier_type == "down-and-in":
+        crossed = np.any(paths<=H , axis=0)
+        CT[~crossed] = 0
+        PT[~crossed] = 0
+        
+    elif barrier_type == "up-and-out":
+        crossed = np.any(paths>=H , axis=0)
+        CT[crossed] = 0
+        PT[crossed] = 0
+        
+    elif barrier_type == "up-and-in":
+        crossed = np.any(paths>=H , axis=0)
+        CT[~crossed] = 0
+        PT[~crossed] = 0
+    else:
+        raise ValueError(
+            "Invalid barrier type. Choose from "
+            "'down-and-out', 'down-and-in', "
+            "'up-and-out', 'up-and-in'."
+        )
+    
+    call = np.exp(-r*T)*np.mean(CT)
+    put = np.exp(-r*T)*np.mean(PT)
+
+    return call, put
+    
+
+        
+    
 
