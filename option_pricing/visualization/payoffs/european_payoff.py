@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 
 class PayoffDiagram:
     def __init__(self, K, premium=0):
+        if K <= 0:
+            raise ValueError(f"K must be positive, got {K}")
+        if premium < 0:
+            raise ValueError(f"premium must be non-negative, got {premium}")
         self.K = K
         self.premium = premium
 

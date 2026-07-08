@@ -13,6 +13,8 @@ from option_pricing._core import simulate_paths
 
 class AsianPayoff:
     def __init__(self, S, K, T, r, sigma, N=100, M=2000):
+        if K <= 0:
+            raise ValueError(f"K must be positive, got {K}")
         self.S = S
         self.K = K
         self.T = T

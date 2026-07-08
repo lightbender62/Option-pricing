@@ -124,6 +124,11 @@ class MonteCarloVisualization:
     def barrier_paths(self, H, barrier_type, num_paths=50):
         """Plot simulated paths, highlighting which ones cross the barrier."""
 
+        if "down" in barrier_type and H >= self.S:
+            raise ValueError("For down barriers, H must be less than S.")
+        if "up" in barrier_type and H <= self.S:
+            raise ValueError("For up barriers, H must be greater than S.")
+
         all_paths = simulate_paths(
             self.S,
             self.T,

@@ -5,6 +5,20 @@ import numpy as np
 
 
 def simulate_paths(S, T, r, sigma, N, M):
+    if S <= 0:
+        raise ValueError(f"S must be positive, got {S}")
+    if T < 0:
+        raise ValueError(f"T must be non-negative, got {T}")
+    if sigma < 0:
+        raise ValueError(f"sigma must be non-negative, got {sigma}")
+    if N < 1:
+        raise ValueError(f"N (steps) must be at least 1, got {N}")
+    if M < 1:
+        raise ValueError(f"M (paths) must be at least 1, got {M}")
+
+    if T == 0:
+        return np.full(shape=(1, M), fill_value=float(S))
+
     #precompute constants
     dt = T / N
     nudt = (r - 0.5 * sigma**2) * dt
@@ -20,6 +34,9 @@ def simulate_paths(S, T, r, sigma, N, M):
     return np.exp(lnSt)
 
 def european_price(S, K, T, r, sigma, N, M):
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
+
     paths = simulate_paths(S , T , r , sigma , N , M)
     ST = paths[-1]
     CT = np.maximum(0 , ST - K)
@@ -31,6 +48,9 @@ def european_price(S, K, T, r, sigma, N, M):
     return call, put
 
 def asian_price_arithmetic(S ,K , T , r , sigma , N , M):
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
+
     St = simulate_paths(S , T , r , sigma , N , M)
     average_St = np.mean(St[1:] , axis = 0)
     Ct = np.maximum(0 , average_St - K)
@@ -42,6 +62,9 @@ def asian_price_arithmetic(S ,K , T , r , sigma , N , M):
     return call , put
 
 def asian_price_geometric(S , K , T ,r , sigma , N , M):
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
+
     paths = simulate_paths(S , T , r , sigma , N , M)
     lnSt = np.log(paths)
     average_lnSt = np.mean(lnSt[1:] , axis = 0)
@@ -55,6 +78,8 @@ def asian_price_geometric(S , K , T ,r , sigma , N , M):
     return call , put
 
 def barrier_price(S , K , T , r , sigma , N , M , H , barrier_type):
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
     if "down" in barrier_type and H >= S:
         raise ValueError("For down barriers, H must be less than S.")
 
@@ -109,6 +134,9 @@ def lookback_price_floating(S , T , r , sigma , N , M):
     return call , put
 
 def lookback_price_fixed(S ,K , T , r , sigma , N , M):
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
+
     paths = simulate_paths(S , T , r , sigma , N , M)
     S_minimum = np.min(paths , axis = 0)
     S_maximum = np.max(paths , axis = 0)
@@ -120,8 +148,3 @@ def lookback_price_fixed(S ,K , T , r , sigma , N , M):
     put = np.exp(-r*T)*np.mean(PT)
 
     return call , put
-    
-
-        
-    
-

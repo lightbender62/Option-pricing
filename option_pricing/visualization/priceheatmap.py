@@ -17,6 +17,8 @@ class PriceHeatmap:
         self.sigma = sigma
 
     def plot(self, option='call'):
+        if option not in ('call', 'put'):
+            raise ValueError(f"Unknown option '{option}'. Choose from: 'call', 'put'")
         S_range = np.linspace(0.5 * self.S, 1.5 * self.S, 50)
         sigma_range = np.linspace(0.05, 0.8, 50)
 

@@ -18,7 +18,13 @@ class VolatilitySurface:
         self.ticker = ticker
         self.r = r
         self.data = yf.Ticker(ticker)
-        self.S = self.data.history(period="1d")["Close"].iloc[-1]
+        history = self.data.history(period="1d")
+        if history.empty:
+            raise ValueError(f"No market data found for ticker '{ticker}'. Check the symbol is correct and actively traded.")
+
+        self.S = history["Close"].iloc[-1]
+
+        
 
     def available_expiries(self):
         """Return all available option expiry dates."""

@@ -4,6 +4,23 @@ Binomial tree (CRR) option pricing model.
 import numpy as np
 
 def binomial_price(S0, K, T, r, sigma, N):
+    if S0 <= 0:
+        raise ValueError(f"S0 must be positive, got {S0}")
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
+    if T < 0:
+        raise ValueError(f"T must be non-negative, got {T}")
+    if sigma < 0:
+        raise ValueError(f"sigma must be non-negative, got {sigma}")
+    if N < 1:
+        raise ValueError(f"N (steps) must be at least 1, got {N}")
+
+    if T == 0 or sigma == 0:
+        # Deterministic path: only the terminal payoff matters, discounted back.
+        forward_price = S0 * np.exp(r * T)
+        call = max(0, forward_price - K) * np.exp(-r * T)
+        put = max(0, K - forward_price) * np.exp(-r * T)
+        return call, put
 
     #precomute constants
     dt = T/N
@@ -34,6 +51,27 @@ def binomial_price(S0, K, T, r, sigma, N):
     return C[0] , P[0]
 
 def american_price(S0, K, T, r, sigma, N):
+    if S0 <= 0:
+        raise ValueError(f"S0 must be positive, got {S0}")
+    if K <= 0:
+        raise ValueError(f"K must be positive, got {K}")
+    if T < 0:
+        raise ValueError(f"T must be non-negative, got {T}")
+    if sigma < 0:
+        raise ValueError(f"sigma must be non-negative, got {sigma}")
+    if N < 1:
+        raise ValueError(f"N (steps) must be at least 1, got {N}")
+
+    if T == 0 or sigma == 0:
+        # Deterministic path: early exercise reduces to picking the best
+        # discounted payoff along the single known price trajectory.
+        dt = T / N if T > 0 else 0
+        times = np.arange(N + 1) * dt
+        S_t = S0 * np.exp(r * times)
+        call = np.max(np.maximum(S_t - K, 0) * np.exp(-r * times))
+        put = np.max(np.maximum(K - S_t, 0) * np.exp(-r * times))
+        return call, put
+
     # precompute constants
     dt = T / N
     u = np.exp(sigma * np.sqrt(dt))
