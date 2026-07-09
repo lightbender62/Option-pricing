@@ -30,7 +30,7 @@ class VolatilitySurface:
         """Return all available option expiry dates."""
         return self.data.options
 
-    def _fetch_chain(self, expiry):
+    def _fetch_chain(self, expiry , surface = False):
         """Fetch liquid call options for the given expiry."""
 
         chain = self.data.option_chain(expiry)
@@ -47,13 +47,19 @@ class VolatilitySurface:
 
         # Liquidity filters
         calls = calls[calls["midPrice"] > 0.01]
-        calls = calls[calls["volume"] > 10]
-        calls = calls[calls["openInterest"] > 100]
+        if surface:
+            calls = calls[calls["volume"] > 50]
+            calls = calls[calls["openInterest"] > 500]
+        else:
+            calls = calls[calls["volume"] > 10]
+            calls = calls[calls["openInterest"] > 50]
+        spread = (calls["ask"] - calls["bid"]) / calls["midPrice"]
+        calls = calls[spread < 0.15]    
 
         # Keep strikes reasonably close to spot
         calls = calls[
-            (calls["strike"] >= 0.7 * self.S)
-            & (calls["strike"] <= 1.3 * self.S)
+            (calls["strike"] >= 0.5 * self.S)
+            & (calls["strike"] <= 1.5 * self.S)
         ]
 
         return calls
@@ -67,10 +73,10 @@ class VolatilitySurface:
         delta = expiry_date - today
         return delta.total_seconds() / (365 * 24 * 3600)
 
-    def _solve_iv(self, expiry):
+    def _solve_iv(self, expiry , surface = False):
         """Compute implied volatilities for one expiry."""
 
-        calls = self._fetch_chain(expiry)
+        calls = self._fetch_chain(expiry , surface)
 
         if calls.empty:
             return None, None
@@ -110,7 +116,7 @@ class VolatilitySurface:
     def smile(self, expiry):
         """Plot volatility smile for a single expiry."""
 
-        strikes, ivs = self._solve_iv(expiry)
+        strikes, ivs = self._solve_iv(expiry , False)
 
         if strikes is None or len(strikes) == 0:
             print(f"No data for expiry {expiry}")
@@ -155,7 +161,7 @@ class VolatilitySurface:
         plt.tight_layout()
         plt.show()
 
-    def surface(self, num_expiries=15):
+    def surface(self, num_expiries=30):
         """Plot 3D implied volatility surface."""
 
         expiries = self.data.options[:num_expiries]
@@ -166,7 +172,7 @@ class VolatilitySurface:
 
         for expiry in expiries:
 
-            strikes, ivs = self._solve_iv(expiry)
+            strikes, ivs = self._solve_iv(expiry , True)
 
             if strikes is None or len(strikes) < 3:
                 continue
@@ -197,7 +203,7 @@ class VolatilitySurface:
             (K_all, T_all),
             IV_all * 100,
             (K_mesh, T_mesh),
-            method="linear",
+            method="cubic",
             fill_value=np.nan,
         )
 

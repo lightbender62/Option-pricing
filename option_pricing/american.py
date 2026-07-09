@@ -7,10 +7,10 @@ from option_pricing.base import BaseOption
 
 class AmericanOption(BaseOption):
 
-    def call(self, steps=100):
+    def call(self, steps=500):
         call, _ = american_price(self.S, self.K, self.T, self.r, self.sigma, steps)
         return call
 
-    def put(self, steps=100):
+    def put(self, steps=500):
         _, put = american_price(self.S, self.K, self.T, self.r, self.sigma, steps)
         return put

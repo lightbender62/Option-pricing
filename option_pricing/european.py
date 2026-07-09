@@ -13,7 +13,7 @@ from option_pricing.base import BaseOption
 
 class EuropeanOption(BaseOption):
 
-    def call(self, model='black_scholes', steps=100, paths=100000):
+    def call(self, model='black_scholes', steps=500, paths=100000):
         if model == 'black_scholes':
             call, _ = calculate_price(self.S, self.K, self.T, self.r, self.sigma)
         elif model == 'binomial':
@@ -71,8 +71,7 @@ class EuropeanOption(BaseOption):
     def implied_vol(self, call_price=None, put_price=None):
         if call_price is None and put_price is None:
             raise ValueError("Provide at least one of call_price or put_price")
-        iv_call, iv_put = calculate_iv(self.S, self.K, self.T, self.r,
-                                        call_price or 0, put_price or 0)
+        iv_call, iv_put = calculate_iv(self.S, self.K, self.T, self.r, call_price, put_price)
         if call_price is not None and put_price is not None:
             return iv_call, iv_put
         elif call_price is not None:

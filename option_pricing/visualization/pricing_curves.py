@@ -39,7 +39,7 @@ class PricingCurves:
         plt.figure(figsize=(10, 5))
         plt.plot(sigma_range * 100, calls, color='green', linewidth=2, label='Call')
         plt.plot(sigma_range * 100, puts, color='red', linewidth=2, label='Put')
-        plt.axvline(x=self.sigma * 100, color='gray', linestyle='--', label=f'Current Vol ({self.sigma*100:.0f}%)')
+        plt.axvline(x=self.sigma * 100, color='gray', linestyle='--', label=f'Current σ ({self.sigma*100:.0f}%)')
         plt.title('Option Price vs Volatility')
         plt.xlabel('Volatility (%)')
         plt.ylabel('Option Price')

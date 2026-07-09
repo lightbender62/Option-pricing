@@ -2,28 +2,33 @@
 Implied volatility solver using Newton-Raphson method.
 """
 from option_pricing._core.black_scholes import calculate_price
-from option_pricing._core.greeks import calculate_vega
+from option_pricing._core.analytics.greeks import calculate_vega
 
 tol = 1e-6
 
-def calculate_iv(S, K, T, r, call_market, put_market):
+def calculate_iv(S, K, T, r, call_market=None, put_market=None):
     if S <= 0:
         raise ValueError(f"S must be positive, got {S}")
     if K <= 0:
         raise ValueError(f"K must be positive, got {K}")
     if T <= 0:
         raise ValueError(f"T must be positive, got {T}")
-    if call_market < 0:
+    if call_market is None and put_market is None:
+        raise ValueError("Provide at least one of call_market or put_market")
+    if call_market is not None and call_market < 0:
         raise ValueError(f"call_market must be non-negative, got {call_market}")
-    if put_market < 0:
+    if put_market is not None and put_market < 0:
         raise ValueError(f"put_market must be non-negative, got {put_market}")
 
     vol_old_C = 0.5 #initial guess
     vol_old_P = 0.5 #initial guess
     max_iter = 200 #safety limit
 
-    b1 = False
-    b2 = False
+    # Skip solving a side entirely if its market price wasn't provided.
+    b1 = call_market is None
+    b2 = put_market is None
+    solved_call = not b1
+    solved_put = not b2
 
     #Calculation
     for _ in range (max_iter):
@@ -68,9 +73,9 @@ def calculate_iv(S, K, T, r, call_market, put_market):
         if(b1 and b2):
             break
 
-    if not b1:
+    if solved_call and not b1:
         raise ValueError(f"IV solver did not converge for call within {max_iter} iterations.")
-    if not b2:
+    if solved_put and not b2:
         raise ValueError(f"IV solver did not converge for put within {max_iter} iterations.")
-    
-    return vol_old_C , vol_old_P
+
+    return (vol_old_C if solved_call else None), (vol_old_P if solved_put else None)
