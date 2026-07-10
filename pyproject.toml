@@ -8,20 +8,31 @@ version = "1.0.0"
 description = "A Python library for option pricing and quantitative finance analytics."
 readme = "README.md"
 requires-python = ">=3.10"
+
 authors = [
-    {name = "Eklavya"},
-    {name = "Soham Gupta"},
-    {name = "Prasad Wagh"},
-    {name = "Parth Kalia"}
+    { name = "Eklavya" },
+    { name = "Soham Gupta" },
+    { name = "Prasad Wagh" },
+    { name = "Parth Kalia" }
 ]
 
 dependencies = [
     "numpy>=1.21",
-    "yfinance>=0.2",
+    "scipy>=1.9",
     "matplotlib>=3.5",
     "plotly>=5.0",
-    "scipy>=1.9"
+    "yfinance>=0.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0"
 ]
 
 [tool.setuptools.packages.find]
 include = ["option_pricing*"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:FigureCanvasAgg is non-interactive.*:UserWarning",
+]
