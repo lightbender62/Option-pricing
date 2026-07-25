@@ -29,17 +29,18 @@ class PriceHeatmap:
                 call, put = calculate_price(s, self.K, self.T, self.r, sig)
                 prices[i, j] = call if option == 'call' else put
 
-        plt.figure(figsize=(10, 6))
-        plt.contourf(S_range, sigma_range * 100, prices, levels=30, cmap='Blues')
-        plt.colorbar(label='Option Price')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        contour = ax.contourf(S_range, sigma_range * 100, prices, levels=30, cmap='Blues')
+        fig.colorbar(contour, ax=ax, label='Option Price')
 
-        plt.axvline(x=self.S, color='red', linestyle='--', linewidth=1.5, label=f'Current S ({self.S})')
-        plt.axvline(x=self.K, color='black', linestyle='--', linewidth=1.5, label=f'Strike ({self.K})')
-        plt.axhline(y=self.sigma * 100, color='white', linestyle='--', linewidth=1.5, label=f'Current Vol ({self.sigma*100:.0f}%)')
+        ax.axvline(x=self.S, color='red', linestyle='--', linewidth=1.5, label=f'Current S ({self.S})')
+        ax.axvline(x=self.K, color='black', linestyle='--', linewidth=1.5, label=f'Strike ({self.K})')
+        ax.axhline(y=self.sigma * 100, color='white', linestyle='--', linewidth=1.5, label=f'Current Vol ({self.sigma*100:.0f}%)')
 
-        plt.title(f'{"Call" if option == "call" else "Put"} Price Heatmap — Stock Price × Volatility')
-        plt.xlabel('Stock Price')
-        plt.ylabel('Volatility (%)')
-        plt.legend()
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f'{"Call" if option == "call" else "Put"} Price Heatmap — Stock Price × Volatility')
+        ax.set_xlabel('Stock Price')
+        ax.set_ylabel('Volatility (%)')
+        ax.legend()
+        fig.tight_layout()
+
+        return fig

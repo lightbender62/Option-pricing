@@ -30,16 +30,16 @@ class MonteCarloVisualization:
 
         ST = paths[-1]
 
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
 
-        plt.hist(
+        ax.hist(
             ST,
             bins=40,
             edgecolor="black",
             alpha=0.7,
         )
 
-        plt.axvline(
+        ax.axvline(
             np.mean(ST),
             color="red",
             linestyle="--",
@@ -47,7 +47,7 @@ class MonteCarloVisualization:
             label=f"Mean ({np.mean(ST):.2f})",
         )
 
-        plt.axvline(
+        ax.axvline(
             self.S,
             color="green",
             linestyle="--",
@@ -55,7 +55,7 @@ class MonteCarloVisualization:
             label=f"Initial Price ({self.S:.2f})",
         )
 
-        plt.axvline(
+        ax.axvline(
             self.K,
             color="navy",
             linestyle=":",
@@ -63,16 +63,16 @@ class MonteCarloVisualization:
             label=f"Strike ({self.K:.2f})",
         )
 
-        plt.title("Terminal Stock Price Distribution")
-        plt.xlabel("Terminal Stock Price")
-        plt.ylabel("Frequency")
+        ax.set_title("Terminal Stock Price Distribution")
+        ax.set_xlabel("Terminal Stock Price")
+        ax.set_ylabel("Frequency")
 
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
 
-    
+        return fig
+
     def paths(self, num_paths=50):
         """Plot simulated stock price paths."""
 
@@ -87,17 +87,17 @@ class MonteCarloVisualization:
 
         time_steps = np.linspace(0, self.T, self.N + 1)
 
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
 
         for i in range(min(num_paths, self.M)):
-            plt.plot(
+            ax.plot(
                 time_steps,
                 all_paths[:, i],
                 linewidth=0.8,
                 alpha=0.6,
             )
 
-        plt.axhline(
+        ax.axhline(
             self.K,
             color="black",
             linestyle="--",
@@ -105,7 +105,7 @@ class MonteCarloVisualization:
             label=f"Strike ({self.K})",
         )
 
-        plt.axhline(
+        ax.axhline(
             self.S,
             color="red",
             linestyle="--",
@@ -113,14 +113,15 @@ class MonteCarloVisualization:
             label=f"Initial Price ({self.S})",
         )
 
-        plt.title(f"Simulated Stock Price Paths (n={num_paths})")
-        plt.xlabel("Time (Years)")
-        plt.ylabel("Stock Price")
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
-    
+        ax.set_title(f"Simulated Stock Price Paths (n={num_paths})")
+        ax.set_xlabel("Time (Years)")
+        ax.set_ylabel("Stock Price")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
+
     def barrier_paths(self, H, barrier_type, num_paths=50):
         """Plot simulated paths, highlighting which ones cross the barrier."""
 
@@ -151,14 +152,14 @@ class MonteCarloVisualization:
                 "'up-and-out', 'up-and-in'."
             )
 
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
 
         plotted = 0
         for i in range(self.M):
             if plotted >= num_paths:
                 break
             color = "red" if crossed[i] else "steelblue"
-            plt.plot(
+            ax.plot(
                 time_steps,
                 all_paths[:, i],
                 linewidth=0.8,
@@ -167,7 +168,7 @@ class MonteCarloVisualization:
             )
             plotted += 1
 
-        plt.axhline(
+        ax.axhline(
             H,
             color="black",
             linestyle="--",
@@ -175,7 +176,7 @@ class MonteCarloVisualization:
             label=f"Barrier ({H})",
         )
 
-        plt.axhline(
+        ax.axhline(
             self.S,
             color="green",
             linestyle="--",
@@ -183,16 +184,17 @@ class MonteCarloVisualization:
             label=f"Initial Price ({self.S})",
         )
 
-        plt.plot([], [], color="red", linewidth=2, label="Crossed barrier")
-        plt.plot([], [], color="steelblue", linewidth=2, label="Never crossed")
+        ax.plot([], [], color="red", linewidth=2, label="Crossed barrier")
+        ax.plot([], [], color="steelblue", linewidth=2, label="Never crossed")
 
-        plt.title(f"Barrier Path Visualization ({barrier_type})")
-        plt.xlabel("Time (Years)")
-        plt.ylabel("Stock Price")
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f"Barrier Path Visualization ({barrier_type})")
+        ax.set_xlabel("Time (Years)")
+        ax.set_ylabel("Stock Price")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def lookback_paths(self, num_paths=10):
         """Plot simulated paths with their running max and min highlighted."""
@@ -209,15 +211,15 @@ class MonteCarloVisualization:
         time_steps = np.linspace(0, self.T, self.N + 1)
         n_shown = min(num_paths, self.M)
 
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
 
         for i in range(n_shown):
             path = all_paths[:, i]
             running_max = np.maximum.accumulate(path)
             running_min = np.minimum.accumulate(path)
 
-            line, = plt.plot(time_steps, path, linewidth=1.0, alpha=0.7)
-            plt.plot(
+            line, = ax.plot(time_steps, path, linewidth=1.0, alpha=0.7)
+            ax.plot(
                 time_steps,
                 running_max,
                 linestyle="--",
@@ -225,7 +227,7 @@ class MonteCarloVisualization:
                 alpha=0.5,
                 color=line.get_color(),
             )
-            plt.plot(
+            ax.plot(
                 time_steps,
                 running_min,
                 linestyle=":",
@@ -234,17 +236,18 @@ class MonteCarloVisualization:
                 color=line.get_color(),
             )
 
-        plt.plot([], [], color="gray", linestyle="-", label="Path")
-        plt.plot([], [], color="gray", linestyle="--", label="Running max")
-        plt.plot([], [], color="gray", linestyle=":", label="Running min")
+        ax.plot([], [], color="gray", linestyle="-", label="Path")
+        ax.plot([], [], color="gray", linestyle="--", label="Running max")
+        ax.plot([], [], color="gray", linestyle=":", label="Running min")
 
-        plt.title(f"Lookback Path Visualization (n={n_shown})")
-        plt.xlabel("Time (Years)")
-        plt.ylabel("Stock Price")
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f"Lookback Path Visualization (n={n_shown})")
+        ax.set_xlabel("Time (Years)")
+        ax.set_ylabel("Stock Price")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def asian_average(self, num_paths=10):
         """Plot simulated paths with their running average overlaid."""
@@ -261,14 +264,14 @@ class MonteCarloVisualization:
         time_steps = np.linspace(0, self.T, self.N + 1)
         n_shown = min(num_paths, self.M)
 
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
 
         for i in range(n_shown):
             path = all_paths[:, i]
             running_avg = np.cumsum(path) / np.arange(1, len(path) + 1)
 
-            line, = plt.plot(time_steps, path, linewidth=1.0, alpha=0.5)
-            plt.plot(
+            line, = ax.plot(time_steps, path, linewidth=1.0, alpha=0.5)
+            ax.plot(
                 time_steps,
                 running_avg,
                 linestyle="--",
@@ -276,7 +279,7 @@ class MonteCarloVisualization:
                 color=line.get_color(),
             )
 
-        plt.axhline(
+        ax.axhline(
             self.K,
             color="black",
             linestyle=":",
@@ -284,33 +287,36 @@ class MonteCarloVisualization:
             label=f"Strike ({self.K})",
         )
 
-        plt.plot([], [], color="gray", linestyle="-", label="Path")
-        plt.plot([], [], color="gray", linestyle="--", label="Running average")
+        ax.plot([], [], color="gray", linestyle="-", label="Path")
+        ax.plot([], [], color="gray", linestyle="--", label="Running average")
 
-        plt.title(f"Asian Average Visualization (n={n_shown})")
-        plt.xlabel("Time (Years)")
-        plt.ylabel("Stock Price")
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f"Asian Average Visualization (n={n_shown})")
+        ax.set_xlabel("Time (Years)")
+        ax.set_ylabel("Stock Price")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def plot(self, kind='all', num_paths=50, H=None, barrier_type=None):
         if kind == 'paths':
-            self.paths(num_paths)
+            return self.paths(num_paths)
         elif kind == 'distribution':
-            self.terminal_distribution()
+            return self.terminal_distribution()
         elif kind == 'barrier':
             if H is None or barrier_type is None:
                 raise ValueError("kind='barrier' requires H and barrier_type")
-            self.barrier_paths(H, barrier_type, num_paths)
+            return self.barrier_paths(H, barrier_type, num_paths)
         elif kind == 'lookback':
-            self.lookback_paths(num_paths)
+            return self.lookback_paths(num_paths)
         elif kind == 'asian':
-            self.asian_average(num_paths)
+            return self.asian_average(num_paths)
         elif kind == 'all':
-            self.paths(num_paths)
-            self.terminal_distribution()
+            return {
+                'paths': self.paths(num_paths),
+                'distribution': self.terminal_distribution(),
+            }
         else:
             raise ValueError(
                 f"Unknown kind '{kind}'. Choose from: "

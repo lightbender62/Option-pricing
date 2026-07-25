@@ -26,16 +26,18 @@ class ConvergenceAnalysis:
             call, _ = european_price(self.S, self.K, self.T, self.r, self.sigma, N=252, M=M)
             mc_prices.append(call)
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(path_counts, mc_prices, color='navy', linewidth=2, marker='o', label='MC Price')
-        plt.axhline(y=bs_call, color='red', linestyle='--', linewidth=1.5, label=f'BS Price ({bs_call:.4f})')
-        plt.xscale('log')
-        plt.title('Monte Carlo Convergence')
-        plt.xlabel('Number of Paths (log scale)')
-        plt.ylabel('Call Price')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(path_counts, mc_prices, color='navy', linewidth=2, marker='o', label='MC Price')
+        ax.axhline(y=bs_call, color='red', linestyle='--', linewidth=1.5, label=f'BS Price ({bs_call:.4f})')
+        ax.set_xscale('log')
+        ax.set_title('Monte Carlo Convergence')
+        ax.set_xlabel('Number of Paths (log scale)')
+        ax.set_ylabel('Call Price')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def _binomial_convergence(self):
         bs_call, _ = calculate_price(self.S, self.K, self.T, self.r, self.sigma)
@@ -47,15 +49,17 @@ class ConvergenceAnalysis:
             call, _ = binomial_price(self.S, self.K, self.T, self.r, self.sigma, N)
             bin_prices.append(call)
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(step_counts, bin_prices, color='green', linewidth=2, marker='o', label='Binomial Price')
-        plt.axhline(y=bs_call, color='red', linestyle='--', linewidth=1.5, label=f'BS Price ({bs_call:.4f})')
-        plt.title('Binomial Tree Convergence')
-        plt.xlabel('Number of Steps')
-        plt.ylabel('Call Price')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(step_counts, bin_prices, color='green', linewidth=2, marker='o', label='Binomial Price')
+        ax.axhline(y=bs_call, color='red', linestyle='--', linewidth=1.5, label=f'BS Price ({bs_call:.4f})')
+        ax.set_title('Binomial Tree Convergence')
+        ax.set_xlabel('Number of Steps')
+        ax.set_ylabel('Call Price')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def plot(self, kind='all'):
         options = {
@@ -64,11 +68,8 @@ class ConvergenceAnalysis:
         }
 
         if kind == 'all':
-            for fn in options.values():
-                fn()
+            return {name: fn() for name, fn in options.items()}
         elif kind in options:
-            options[kind]()
+            return options[kind]()
         else:
             raise ValueError(f"Unknown kind '{kind}'. Choose from: 'mc', 'binomial', 'all'")
-
-        plt.show()

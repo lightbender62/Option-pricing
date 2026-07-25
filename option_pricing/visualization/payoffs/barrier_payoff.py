@@ -52,16 +52,17 @@ class BarrierPayoff:
 
         call_realized = np.where(active, call_payoff, 0)
 
-        plt.figure(figsize=(10, 5))
-        plt.scatter(ST[active], call_realized[active], s=8, alpha=0.4, color='green', label='Call payoff (active)')
-        plt.scatter(ST[~active], call_realized[~active], s=8, alpha=0.3, color='lightgray', label='Voided by barrier')
-        plt.axvline(self.K, color='gray', linestyle='--', label=f'Strike ({self.K})')
-        plt.axvline(H, color='black', linestyle=':', label=f'Barrier ({H})')
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.scatter(ST[active], call_realized[active], s=8, alpha=0.4, color='green', label='Call payoff (active)')
+        ax.scatter(ST[~active], call_realized[~active], s=8, alpha=0.3, color='lightgray', label='Voided by barrier')
+        ax.axvline(self.K, color='gray', linestyle='--', label=f'Strike ({self.K})')
+        ax.axvline(H, color='black', linestyle=':', label=f'Barrier ({H})')
 
-        plt.title(f'Barrier Option Payoff ({barrier_type})')
-        plt.xlabel('Terminal Stock Price')
-        plt.ylabel('Call Payoff')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f'Barrier Option Payoff ({barrier_type})')
+        ax.set_xlabel('Terminal Stock Price')
+        ax.set_ylabel('Call Payoff')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig

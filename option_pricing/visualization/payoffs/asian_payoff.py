@@ -38,15 +38,16 @@ class AsianPayoff:
         call_payoff = np.maximum(avg_price - self.K, 0)
         put_payoff = np.maximum(self.K - avg_price, 0)
 
-        plt.figure(figsize=(10, 5))
-        plt.scatter(avg_price, call_payoff, s=8, alpha=0.4, color='green', label='Call payoff')
-        plt.scatter(avg_price, put_payoff, s=8, alpha=0.4, color='navy', label='Put payoff')
-        plt.axvline(self.K, color='gray', linestyle='--', label=f'Strike ({self.K})')
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.scatter(avg_price, call_payoff, s=8, alpha=0.4, color='green', label='Call payoff')
+        ax.scatter(avg_price, put_payoff, s=8, alpha=0.4, color='navy', label='Put payoff')
+        ax.axvline(self.K, color='gray', linestyle='--', label=f'Strike ({self.K})')
 
-        plt.title(f'Asian Option Payoff ({average} average)')
-        plt.xlabel('Average Price Over Path')
-        plt.ylabel('Payoff')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f'Asian Option Payoff ({average} average)')
+        ax.set_xlabel('Average Price Over Path')
+        ax.set_ylabel('Payoff')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig

@@ -19,17 +19,19 @@ class GreeksProfile:
     def _plot_greek(self, call_values, put_values, title, ylabel):
         S_range = np.linspace(0.5 * self.S, 1.5 * self.S, 200)
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(S_range, call_values, color='green', linewidth=2, label='Call')
-        plt.plot(S_range, put_values, color='red', linewidth=2, label='Put')
-        plt.axvline(x=self.S, color='gray', linestyle='--', label=f'Current S ({self.S})')
-        plt.axvline(x=self.K, color='black', linestyle='--', label=f'Strike ({self.K})')
-        plt.title(title)
-        plt.xlabel('Stock Price')
-        plt.ylabel(ylabel)
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(S_range, call_values, color='green', linewidth=2, label='Call')
+        ax.plot(S_range, put_values, color='red', linewidth=2, label='Put')
+        ax.axvline(x=self.S, color='gray', linestyle='--', label=f'Current S ({self.S})')
+        ax.axvline(x=self.K, color='black', linestyle='--', label=f'Strike ({self.K})')
+        ax.set_title(title)
+        ax.set_xlabel('Stock Price')
+        ax.set_ylabel(ylabel)
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def _compute_all(self):
         S_range = np.linspace(0.5 * self.S, 1.5 * self.S, 200)
@@ -58,11 +60,8 @@ class GreeksProfile:
         }
 
         if greek == 'all':
-            for fn in options.values():
-                fn()
-            plt.show()
+            return {name: fn() for name, fn in options.items()}
         elif greek in options:
-            options[greek]()
-            plt.show()
+            return options[greek]()
         else:
             raise ValueError(f"Unknown greek '{greek}'. Choose from: 'delta', 'gamma', 'theta', 'vega', 'rho', 'all'")

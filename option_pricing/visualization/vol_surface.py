@@ -119,47 +119,47 @@ class VolatilitySurface:
         strikes, ivs = self._solve_iv(expiry , False)
 
         if strikes is None or len(strikes) == 0:
-            print(f"No data for expiry {expiry}")
-            return
+            return None
 
         # Sort before plotting
         idx = np.argsort(strikes)
         strikes = strikes[idx]
         ivs = ivs[idx]
 
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
 
-        plt.plot(
+        ax.plot(
             strikes,
             ivs * 100,
             color="navy",
             linewidth=2,
         )
 
-        plt.scatter(
+        ax.scatter(
             strikes,
             ivs * 100,
             s=20,
         )
 
-        plt.axvline(
+        ax.axvline(
             x=self.S,
             color="red",
             linestyle="--",
             label=f"Spot ({self.S:.1f})",
         )
 
-        plt.title(
+        ax.set_title(
             f"Volatility Smile — {self.ticker} | Expiry: {expiry}"
         )
 
-        plt.xlabel("Strike")
-        plt.ylabel("Implied Volatility (%)")
+        ax.set_xlabel("Strike")
+        ax.set_ylabel("Implied Volatility (%)")
 
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+
+        return fig
 
     def surface(self, num_expiries=30):
         """Plot 3D implied volatility surface."""
@@ -187,8 +187,7 @@ class VolatilitySurface:
             all_ivs.extend(ivs)
 
         if not all_strikes:
-            print("No data available.")
-            return
+            return None
 
         K_all = np.array(all_strikes)
         T_all = np.array(all_T)
@@ -235,4 +234,4 @@ class VolatilitySurface:
             height=700,
         )
 
-        fig.show()
+        return fig
