@@ -7,8 +7,12 @@ Run from the project root:
 """
 
 from option_pricing import LookbackPayoff
+import matplotlib.pyplot as plt
 
 payoff = LookbackPayoff(S=100, K=100, T=1, r=0.05, sigma=0.2, N=100, M=2000)
 
 payoff.plot(strike_type="floating")
+plt.show()
+
 payoff.plot(strike_type="fixed")
+plt.show()

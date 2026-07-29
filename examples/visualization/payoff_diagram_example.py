@@ -6,9 +6,15 @@ Run from the project root:
 """
 
 from option_pricing import PayoffDiagram
+import matplotlib.pyplot as plt
 
 diagram = PayoffDiagram(K=100, premium=5)
 
 diagram.call()
+plt.show()
+
 diagram.put()
+plt.show()
+
 diagram.both()
+plt.show()

@@ -7,10 +7,14 @@ Run from the project root:
 """
 
 from option_pricing import ConvergenceAnalysis
+import matplotlib.pyplot as plt
 
 conv = ConvergenceAnalysis(S=100, K=100, T=1, r=0.05, sigma=0.2)
 
 conv.plot(kind="mc")
+plt.show()
+
 conv.plot(kind="binomial")
+plt.show()
 # Or plot both at once:
 # conv.plot(kind="all")

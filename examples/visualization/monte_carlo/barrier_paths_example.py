@@ -7,7 +7,9 @@ Run from the project root:
 """
 
 from option_pricing import MonteCarloVisualization
+import matplotlib.pyplot as plt
 
 mc = MonteCarloVisualization(S=100, K=100, T=1, r=0.05, sigma=0.2, N=100, M=2000)
 
 mc.plot(kind="barrier", H=90, barrier_type="down-and-out", num_paths=60)
+plt.show()

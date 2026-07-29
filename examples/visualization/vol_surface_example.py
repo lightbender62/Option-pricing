@@ -9,6 +9,7 @@ Run from the project root:
 """
 
 from option_pricing import VolatilitySurface
+import matplotlib.pyplot as plt
 
 vs = VolatilitySurface(ticker="AAPL", r=0.05)
 
@@ -16,4 +17,6 @@ expiries = vs.available_expiries()
 print(f"Available expiries: {expiries[:5]} ... ({len(expiries)} total)")
 
 vs.smile(expiry=expiries[2])
-vs.surface(num_expiries=10)
+plt.show()
+fig = vs.surface(num_expiries=10)
+fig.show()

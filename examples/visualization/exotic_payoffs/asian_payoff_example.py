@@ -6,8 +6,12 @@ Run from the project root:
 """
 
 from option_pricing import AsianPayoff
+import matplotlib.pyplot as plt
 
 payoff = AsianPayoff(S=100, K=100, T=1, r=0.05, sigma=0.2, N=100, M=2000)
 
 payoff.plot(average="arithmetic")
+plt.show()      
+
 payoff.plot(average="geometric")
+plt.show()     

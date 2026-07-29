@@ -7,8 +7,12 @@ Run from the project root:
 """
 
 from option_pricing import PriceHeatmap
+import matplotlib.pyplot as plt
 
 heatmap = PriceHeatmap(S=100, K=100, T=1, r=0.05, sigma=0.2)
 
 heatmap.plot(option="call")
+plt.show()
+
 heatmap.plot(option="put")
+plt.show()
