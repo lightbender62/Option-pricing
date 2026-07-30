@@ -16,10 +16,16 @@ class ConvergenceAnalysis:
         self.r = r
         self.sigma = sigma
 
-    def _mc_convergence(self):
+    # Package default kept at full fidelity (100,000 paths) for anyone
+    # depending on this library directly. Callers on constrained infra
+    # (e.g. the web portal) can pass a smaller `path_counts` to _mc_convergence
+    # / plot() instead of this class silently downgrading for everyone.
+    DEFAULT_MC_PATH_COUNTS = [100, 500, 1000, 5000, 10000, 50000, 100000]
+
+    def _mc_convergence(self, path_counts=None):
         bs_call, _ = calculate_price(self.S, self.K, self.T, self.r, self.sigma)
 
-        path_counts = [100, 500, 1000, 5000, 10000, 50000, 100000]
+        path_counts = path_counts or self.DEFAULT_MC_PATH_COUNTS
         mc_prices = []
 
         for M in path_counts:
@@ -61,9 +67,9 @@ class ConvergenceAnalysis:
 
         return fig
 
-    def plot(self, kind='all'):
+    def plot(self, kind='all', mc_path_counts=None):
         options = {
-            'mc': self._mc_convergence,
+            'mc': lambda: self._mc_convergence(path_counts=mc_path_counts),
             'binomial': self._binomial_convergence,
         }
 

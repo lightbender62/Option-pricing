@@ -13,24 +13,37 @@ from option_pricing.base import BaseOption
 
 class EuropeanOption(BaseOption):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Caches the (call, put) pair from european_price() per (steps, paths)
+        # combo, so a call()+put() pair for the same montecarlo parameters
+        # reuses one simulation instead of running simulate_paths() twice.
+        self._mc_cache = {}
+
+    def _mc_prices(self, steps, paths):
+        key = (steps, paths)
+        if key not in self._mc_cache:
+            self._mc_cache[key] = european_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
+        return self._mc_cache[key]
+
     def call(self, model='black_scholes', steps=500, paths=100000):
         if model == 'black_scholes':
             call, _ = calculate_price(self.S, self.K, self.T, self.r, self.sigma)
         elif model == 'binomial':
             call, _ = binomial_price(self.S, self.K, self.T, self.r, self.sigma, steps)
         elif model == 'montecarlo':
-            call, _ = european_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
+            call, _ = self._mc_prices(steps, paths)
         else:
             raise ValueError(f"Unknown model '{model}'. Choose from: 'black_scholes', 'binomial', 'montecarlo'")
         return call
 
-    def put(self, model='black_scholes', steps=100, paths=100000):
+    def put(self, model='black_scholes', steps=500, paths=100000):
         if model == 'black_scholes':
             _, put = calculate_price(self.S, self.K, self.T, self.r, self.sigma)
         elif model == 'binomial':
             _, put = binomial_price(self.S, self.K, self.T, self.r, self.sigma, steps)
         elif model == 'montecarlo':
-            _, put = european_price(self.S, self.K, self.T, self.r, self.sigma, steps, paths)
+            _, put = self._mc_prices(steps, paths)
         else:
             raise ValueError(f"Unknown model '{model}'. Choose from: 'black_scholes', 'binomial', 'montecarlo'")
         return put
