@@ -30,33 +30,35 @@ class VolatilitySurface:
         """Return all available option expiry dates."""
         return self.data.options
 
-    def _fetch_chain(self, expiry , surface = False):
+    def _fetch_chain(self, expiry, surface=False):
         """Fetch liquid call options for the given expiry."""
 
         chain = self.data.option_chain(expiry)
 
         calls = chain.calls[
-            ["strike", "bid", "ask", "volume", "openInterest"]
-        ].dropna()
+            ["strike", "bid", "ask", "lastPrice", "volume", "openInterest"]
+        ].dropna(subset=["strike", "lastPrice", "volume", "openInterest"]).copy()
 
-        # Keep only options with valid bid/ask quotes
-        calls = calls[(calls["bid"] > 0) & (calls["ask"] > 0)]
+        has_quote = (calls["bid"] > 0) & (calls["ask"] > 0)
+        calls["midPrice"] = np.where(
+            has_quote,
+            (calls["bid"] + calls["ask"]) / 2,
+            calls["lastPrice"],
+        )
 
-        # Mid-market price
-        calls["midPrice"] = (calls["bid"] + calls["ask"]) / 2
-
-        # Liquidity filters
         calls = calls[calls["midPrice"] > 0.01]
+
         if surface:
-            calls = calls[calls["volume"] > 50]
-            calls = calls[calls["openInterest"] > 500]
+            calls = calls[calls["volume"] > 5]
+            calls = calls[calls["openInterest"] > 50]
         else:
             calls = calls[calls["volume"] > 10]
             calls = calls[calls["openInterest"] > 50]
-        spread = (calls["ask"] - calls["bid"]) / calls["midPrice"]
-        calls = calls[spread < 0.15]    
 
-        # Keep strikes reasonably close to spot
+        has_quote = (calls["bid"] > 0) & (calls["ask"] > 0)
+        spread = (calls["ask"] - calls["bid"]) / calls["midPrice"]
+        calls = calls[~has_quote | (spread < 0.25)]
+
         calls = calls[
             (calls["strike"] >= 0.5 * self.S)
             & (calls["strike"] <= 1.5 * self.S)
