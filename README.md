@@ -1,277 +1,269 @@
-# Option Pricing 
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?logo=numpy)
-![SciPy](https://img.shields.io/badge/SciPy-Optimization-8CAAE6?logo=scipy)
-![Last Commit](https://img.shields.io/github/last-commit/lightbender62/Option-pricing)
-![Repo Size](https://img.shields.io/github/repo-size/lightbender62/Option-pricing)
-![Status](https://img.shields.io/badge/Status-Active%20Development-success)
+# Option Pricing
 
-A Python library implementing classical option pricing models and quantitative finance analytics, developed as part of the IITI Summer of Code (IITI-SOC) program.
+[![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/tests-pytest-success)](https://github.com/lightbender62/Option-pricing/tree/main/tests)
+[![Documentation](https://img.shields.io/badge/docs-online-blue)](https://option-pricing-portal.vercel.app/)
 
-The project aims to provide a modular, easy-to-use implementation of widely used pricing models for European options, along with analytical tools such as option Greeks and implied volatility estimation. In addition to functioning as a Python package, the repository includes a command-line interface, example programs, and supporting documentation.
-Currently, the library supports pricing European Call and Put options.
+[Live Demo](https://option-pricing-portal.vercel.app/) &nbsp;|&nbsp; [Documentation](https://option-pricing-portal.vercel.app/) &nbsp;|&nbsp; [GitHub](https://github.com/lightbender62/Option-pricing)
 
-**Project Status:** This project is currently under active development. The core pricing models and analytical tools have been implemented, while additional features, documentation, visualizations, and pricing models will continue to be added over time.
+A Python library for pricing financial derivatives and performing quantitative finance analytics. It provides closed-form, tree-based, and simulation-based pricing engines for European, American, and exotic options, along with Greeks, implied volatility, and visualization tools.
 
----
+## Contents
+
+- [Why Option Pricing?](#why-option-pricing)
+- [Companion Web Portal](#companion-web-portal)
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Supported Models](#supported-models)
+- [Visualizations](#visualizations)
+- [Validation](#validation)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
+- [Examples](#examples)
+- [Documentation](#documentation)
+
+## Why Option Pricing?
+
+- A unified `call()` / `put()` interface across European, American, and exotic options, rather than a separate API for each.
+- Multiple pricing engines, Black-Scholes, Binomial Tree, and Monte Carlo, accessible through a single consistent method signature.
+- Built-in Greeks and implied volatility solving, without needing a separate analytics library.
+- Publication-quality visualization tools for volatility structure, payoffs, and simulation output.
+- An extensive automated test suite validating every pricing engine against known analytical results.
+
+## Companion Web Portal
+
+This package powers the pricing and analytics engine behind a full-stack web application that lets users price options and explore visualizations through a browser interface.
+
+- Live Portal: [option-pricing-portal.vercel.app](https://option-pricing-portal.vercel.app/)
+- Portal Repository: [github.com/lightbender62/Option-pricing-Portal](https://github.com/lightbender62/Option-pricing-Portal)
+
 ## Features
 
-### Pricing Models
-- Black-Scholes analytical pricing model
-- Cox-Ross-Rubinstein (CRR) Binomial Tree Model
-- Monte Carlo Simulation using Geometric Brownian Motion
+- **Pricing Models** —
+Black-Scholes closed-form pricing, Binomial Tree pricing with early exercise support, and Monte Carlo simulation for path-dependent payoffs.
 
-### Analytics
-- Implied Volatility estimation using the Newton-Raphson method
-- Calculation of Option Greeks
-  - Delta
-  - Gamma
-  - Theta
-  - Vega
-  - Rho
+- **Option Types** —
+European, American, and exotic options including Asian (arithmetic and geometric averaging), Barrier, and Lookback (floating and fixed strike).
 
-### Utilities
-- Interactive command-line interface (`main.py`)
-- Modular Python package
-- Individual example scripts for each implemented model
-- Supporting theoretical documentation
+- **Analytics** —
+Full Greeks calculation (Delta, Gamma, Theta, Vega, Rho) and implied volatility solving from market prices.
 
----
-## Project Structure
-```
-Option-pricing/
-│
-├── docs/
-│   ├── README.md
-│   ├── theory/                      # Mathematical references and notes
-│   └── report/                      # Reports made for evaluations  
-│
-├── examples/                        # Example scripts
-│   ├── black_scholes_example.py
-│   ├── binomial_model_example.py
-│   ├── monte_carlo_example.py
-│   ├── greeks_example.py
-│   └── implied_volatility_example.py
-│
-├── option_pricing/
-│   ├── analytics/
-│   │   ├── __init__.py
-│   │   ├── greeks.py
-│   │   └── implied_volatility.py
-│   │
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── black_scholes.py
-│   │   ├── binomial_model.py
-│   │   └── monte_carlo.py
-│   │
-│   └── __init__.py
-│
-├── .gitignore
-├── main.py                          # Interactive CLI
-├── pyproject.toml                   # Package configuration
-├── README.md
-└── requirements.txt
-```
----
-## Mathematical Models
-### 1. Black-Scholes Model
-Provides a closed form solution for pricing European Call and Put Options under the assumption of constant volatility, constant risk-free interest rate, and lognormally distributed stock prices.
+- **Visualizations** —
+Volatility smiles and surfaces, payoff diagrams, Monte Carlo simulated paths and terminal distributions, price heatmaps, Greeks profiles, and convergence analysis against analytical benchmarks.
 
----
-### 2. Binomial Pricing Model
-Implements the Cox-Ross-Rubinstein (CRR) binomial tree to price European options through backward induction.
+- **Developer Experience** —
+A consistent `call()` / `put()` interface across all option types, a `model=` parameter for selecting the pricing engine, and a full pytest suite covering correctness, convergence, and visualization output.
 
----
-### 3. Monte Carlo Simulation
-Simulates stock price paths using Geometric Brownian Motion (GBM) and estimates option prices by discounting the average payoff at maturity.
+## Benchmark Results
 
----
-### 4. Implied Volatility
-Computes the volatility implied by a market option price using the Newton-Raphson iterative method.
+The **Option Pricing** library was benchmarked locally to evaluate the computational performance of its pricing models and analytical utilities. Each benchmark was executed multiple times using identical input parameters, and the average execution time was recorded.
 
----
-### 5. Greeks
-Calculates the primary risk sensitivities of European options:
-- Delta
-- Gamma
-- Theta
-- Vega
-- Rho
+The results demonstrate the computational trade-offs between analytical, iterative, and simulation-based pricing methods. Analytical models such as **Black–Scholes** achieve execution times in the microsecond range, while iterative methods such as **Implied Volatility** require a few milliseconds. Numerical approaches including the **Binomial Tree** and **Monte Carlo** models exhibit higher execution times due to repeated computations and stochastic simulations, with Monte Carlo being the most computationally intensive.
 
----
+| Component | Configuration | Average Runtime |
+|-----------|---------------|----------------:|
+| Black–Scholes | Analytical | **220.53 μs** |
+| Greeks | Analytical | **598.43 μs** |
+| Implied Volatility | Newton–Raphson | **1.698 ms** |
+| Binomial Tree | 500 Steps | **157.255 ms** |
+| Monte Carlo | 500 Steps, 100,000 Simulation Paths | **2995.353 ms** |
+
+> **Benchmark Environment**
+>
+> - **Processor:** AMD Ryzen 7 (HP Omen)
+> - **Operating System:** Windows 11
+> - **Python Version:** Python 3.x
+>
+> Reported values represent the average execution time over multiple iterations on the above hardware configuration. Actual performance may vary depending on processor architecture, operating system, Python version, and workload configuration.
+
 ## Installation
-Clone the repository:
+
+Requirements: Python 3.10+, NumPy, SciPy, Matplotlib, Plotly, yfinance.
+
+Clone the repository and install locally:
 
 ```bash
 git clone https://github.com/lightbender62/Option-pricing.git
 cd Option-pricing
-```
-
-Create and activate a virtual environment (recommended):
-
-```bash
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# Linux/macOS
-source .venv/bin/activate
-```
-
-Install the package:
-
-```bash
 pip install .
 ```
 
-Run the demo:
-
-```bash
-python main.py
-```
-
----
 ## Quick Start
-Run the interactive command-line application
-```bash
-python main.py
-```
-or use the library directly
+
 ```python
-from option_pricing import Calculate_Price
+from option_pricing import EuropeanOption
 
-call, put = Calculate_Price(
-    S=100,
-    K=100,
-    T=1,
-    r=0.05,
-    vol=0.20,
-)
+option = EuropeanOption(S=100, K=100, T=1, r=0.05, sigma=0.2)
 
-print(call)
-print(put)
+call_price = option.call()
+put_price = option.put()
+
+print(f"Call: {call_price:.4f}, Put: {put_price:.4f}")
 ```
-Examples demonstrating the usage of each pricing model are available in the `examples/` directory.
 
+```
+Call: 10.4506
+Put: 5.5735
+```
 
----
-## Dependencies
-- Python 3.10+
-- NumPy
-- SciPy
+Every option type shares the same interface. Switch pricing engines with the `model` parameter where supported:
 
----
-## Input Parameters
+```python
+option.call(model="binomial", steps=500)
+option.call(model="montecarlo", paths=100000)
+```
 
-### Common Parameters
+Exotic options follow the same `call()` / `put()` pattern, with parameters specific to their payoff structure:
 
-| Parameter | Description |
-|:---------:|-------------|
-| **S** | Current price of the underlying asset (Spot Price). |
-| **K** | Strike price of the option. |
-| **T** | Time to maturity (in years). |
-| **r** | Risk-free interest rate (decimal form). |
-| **σ (vol)** | Annual volatility (decimal form). |
+```python
+from option_pricing import AsianOption, BarrierOption, LookbackOption
 
-### Model-Specific Parameters
+asian = AsianOption(S=100, K=100, T=1, r=0.05, sigma=0.2)
+asian.call(average="arithmetic")
 
-| Parameter | Used In | Description |
-|:---------:|:-------:|-------------|
-| **N** | Binomial Tree | Number of time steps in the tree. |
-| **M** | Monte Carlo | Number of simulated stock price paths. |
-| **Cm** | Implied Volatility | Market call option price. |
-| **Pm** | Implied Volatility | Market put option price. |
----
+barrier = BarrierOption(S=100, K=100, T=1, r=0.05, sigma=0.2, H=120, barrier_type="up-and-out")
+barrier.call()
 
-## Validation & Testing
-To Validate the results by our algorithms, the outputs of all pricing models were compared by using identical input parameters. We use Black-scholes model as benchmark, and Binomial Tree and Monte Carlo methods were evaluated based on their convergence to the Black-Scholes Model solution.
+lookback = LookbackOption(S=100, K=100, T=1, r=0.05, sigma=0.2)
+lookback.call(strike_type="floating")
+```
 
-### Cross-Model Validation
+## Supported Models
 
-Example Input:
+| Model | Status | Description |
+|---|---|---|
+| European | Complete | Black-Scholes, Binomial Tree, and Monte Carlo pricing with full Greeks and implied volatility |
+| American | Complete | Binomial Tree pricing with early exercise |
+| Asian | Complete | Monte Carlo pricing with arithmetic and geometric averaging |
+| Barrier | Complete | Monte Carlo pricing for knock-in and knock-out structures |
+| Lookback | Complete | Monte Carlo pricing with floating and fixed strike variants |
 
-| Parameter | Value |
-|-----------|------:|
-| Stock Price (S) | 100 |
-| Strike Price (K) | 100 |
-| Time to Maturity (T) | 1 year |
-| Risk-free Rate (r) | 0.05 |
-| Volatility (σ) | 0.20 |
+## Visualizations
 
-#### Option Pricing Results
+The package includes a dedicated `visualization` module for inspecting pricing behavior, volatility structure, and simulation output. Each plot below can be reproduced with the corresponding script in `examples/visualization/`.
 
-| Model | Call Price | Put Price | Error vs BS |
-|:------|-----------:|----------:|:-----------:|
-| Black-Scholes | 10.450584 | 5.573526 | — |
-| Binomial Tree (N = 500) | 10.484155 | 5.578729 | 0.32% |
-| Monte Carlo (M = 100000) | 10.446585 | 5.569528 | 0.04% |
+### Volatility Smile
 
-The close agreement in between of three models, shows the validity of the results. The result gets more accurate, when Time steps(N) for Binomial Tree, and number of Simulations(M) for Monte carlo are increased.
+![Volatility smile showing implied volatility against strike price for AAPL options](docs/images/Vol_smile.webp)
 
-#### Greeks Validation
+Implied volatility plotted against strike for a fixed expiry, derived from market option prices via the implied volatility solver.
 
-| Greek | Call | Put |
-|:------|-----:|----:|
-| Delta | 0.636831 | -0.363169 |
-| Gamma | 0.018762 | 0.018762 |
-| Theta | -6.414028 | -1.657880 |
-| Vega | 37.524035 | 37.524035 |
-| Rho | 53.232482 | -41.890461 |
+### Volatility Surface
 
-The calculated Greeks closely match the expected analytical values for the given test case.
+![Implied volatility surface plotted against strike and time to expiry](docs/images/Vol_surface.webp)
 
-#### Implied Volatility Validation
+A full implied volatility surface plotted against strike and time to expiry, built from a grid of implied volatilities across multiple maturities.
 
-| Method | Implied Volatility |
-|:------|-------------------:|
-| Newton-Raphson | 0.200000 |
+### Option Payoff Diagram
 
-The implied volatility solver converges to the expected market volatility for the given option price, confirming the accuracy of the Newton-Raphson implementation.
+![Payoff diagram for a call and put option showing profit and loss at expiry with breakeven points](docs/images/European_payoff.webp)
 
----
+Profit and loss at expiry for a call and put position, with strike and breakeven points marked.
+
+### Simulated Stock Price Paths
+
+![Monte Carlo simulated stock price paths over time](docs/images/MonteCarlo_Paths.webp)
+
+Simulated underlying price paths under geometric Brownian motion, as used internally by the Monte Carlo pricing engine.
+
+### Terminal Price Distribution
+
+![Histogram of terminal stock price distribution from Monte Carlo simulation](docs/images/MonteCarlo_Terminal_Dis.webp)
+
+Distribution of simulated terminal prices at expiry across all Monte Carlo paths, shown against the initial price and strike.
+
+### Monte Carlo Convergence
+
+![Monte Carlo call price converging to the Black-Scholes analytical price as the number of paths increases](docs/images/MonteCarlo_Convergence.webp)
+
+Call price computed by the Monte Carlo engine as the number of simulated paths increases, benchmarked against the Black-Scholes analytical price.
+
+### Binomial Tree Convergence
+
+![Binomial tree call price converging to the Black-Scholes analytical price as the number of steps increases](docs/images/Binomial_Convergence.webp)
+
+Call price computed by the Binomial Tree engine as the number of steps increases, benchmarked against the Black-Scholes analytical price.
+
+## Validation
+
+Numerical pricing methods are validated against known analytical solutions. European option prices from the Binomial Tree and Monte Carlo engines are checked against the Black-Scholes closed-form price, with convergence confirmed as the number of steps or simulated paths increases.
+
+The Binomial Tree converges smoothly and monotonically toward the Black-Scholes price as the number of steps grows. Monte Carlo pricing converges toward the same reference price as the number of simulated paths increases, though with visible variance at low path counts due to its stochastic nature.
+
+Put-call parity and known reference values are also verified directly in the test suite.
+
+## Testing
+
+The package ships with a full `pytest` suite in the `tests/` directory, covering correctness, convergence, and visualization output for every pricing engine and option type.
+
+Install the package in editable mode along with its development dependencies, then run the suite from the project root:
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
+The test suite is organized by component:
+
+| Test file | Coverage |
+|---|---|
+| `test_black_scholes.py` | Closed-form pricing correctness, put-call parity, and limiting behavior |
+| `test_binomial.py` | Binomial Tree pricing and convergence toward Black-Scholes |
+| `test_monte_carlo.py` | Monte Carlo pricing, path simulation, and convergence behavior |
+| `test_european_option.py` | `EuropeanOption` interface across all three pricing engines |
+| `test_american_option.py` | `AmericanOption` pricing with early exercise |
+| `test_exotic_options.py` | `AsianOption`, `BarrierOption`, and `LookbackOption` pricing |
+| `test_greeks_and_iv.py` | Greeks calculation and implied volatility solving |
+| `test_visualizations.py` | Correct generation of plots without runtime errors |
+
+## Project Structure
+
+```text
+option_pricing/
+├── _core/
+│   ├── black_scholes.py
+│   ├── binomial_model.py
+│   ├── monte_carlo.py
+│   └── analytics/
+│       ├── greeks.py
+│       └── implied_volatility.py
+├── exotic/
+│   ├── asian.py
+│   ├── barrier.py
+│   └── lookback.py
+├── visualization/
+│   ├── convergence.py
+│   ├── greeks.py
+│   ├── monte_carlo_visualization.py
+│   ├── priceheatmap.py
+│   ├── pricing_curves.py
+│   ├── vol_surface.py
+│   └── payoffs/
+├── base.py
+├── european.py
+├── american.py
+└── __init__.py
+
+examples/
+├── pricing/
+├── analytics/
+└── visualization/
+
+tests/
+docs/
+```
+
+## Examples
+
+The `examples/` directory contains runnable scripts demonstrating each part of the package:
+
+| Folder | Contents |
+|---|---|
+| `pricing` | European, American, Asian, Barrier, and Lookback option pricing |
+| `analytics` | Greeks calculation and implied volatility solving |
+| `visualization` | Volatility smiles and surfaces, payoff diagrams, Monte Carlo paths, price heatmaps, pricing curves, and convergence analysis |
+
 ## Documentation
 
-Supporting documentation and reference material are available in the `docs/` directory.
-
-### Contents
-
-#### `theory/`
-
-Contains the theoretical references and study material used during the implementation of the pricing models, including:
-
-* Black-Scholes Theory
-* Risk-Neutral Valuation
-* Stochastic Processes
-* Itô Calculus
-* Option Greeks
-
-These references were used to understand the mathematical foundations of the implemented algorithms and to verify their correctness.
-
-#### `report/`
-
-Contains project reports and documentation prepared throughout the development of the project, including the IITI Summer of Code (IITI-SOC) mid-evaluation report and future project reports.
-
-The documentation is intended to complement the source code by providing both the mathematical background and the project's development progress.
-
----
-## Future Work
-Planned additions include : 
-- Support for American options
-- Additional pricing models
-- Performance optimizations
-- More visualization utilities
-- Expanded documentation
-- Additional examples and tutorials
-- Packaging for PyPI distribution
-
----
-## Team
-
-| Name | Roll Number | GitHub |
-|------|------------:|--------|
-| Eklavya | 250001028 | [@lightbender62](https://github.com/lightbender62) |
-| Soham Gupta | 250003073 | [@aspiringchoker](https://github.com/aspiringchoker) |
-| Prasad Wagh | 250004051 | [@ce250004051](https://github.com/ce250004051) |
-| Parth Kalia | 250001054 | [@Parth-250001054](https://github.com/Parth-250001054) |
+Theory notes covering Black-Scholes, Itô calculus, stochastic processes, and the Greeks are available in `docs/Theory/`. API usage and worked examples can be found in the `examples/` directory and the pytest suite in `tests/`. Full API documentation and interactive examples are also available on the companion web portal linked above.
